@@ -11,7 +11,7 @@ window.onload = function() {
         squares[i].isBridge = isBridge;
         }
     //стартовые клетки
-    squares[88].className += " red-x"
+    squares[0].className += " red-x"
     squares[99].className += " blue-x"
     //Подсветка краев поля для обозначения очередности
     let field = document.getElementsByClassName("field")[0]
