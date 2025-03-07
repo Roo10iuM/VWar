@@ -31,12 +31,12 @@ body {
 }
 
 .red-x {
-    background-image: url(/images/redCross.svg);
+    background-image: url(../images/redCross.svg);
     background-size: contain;
 }
 
 .blue-x {
-    background-image: url(/images/blueCross.svg);
+    background-image: url(../images/blueCross.svg);
     background-size: contain;
 }
 
