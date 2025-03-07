@@ -9,13 +9,12 @@ window.onload = function () {
     }
 
     //стартовые клетки
-    squares[0].className += " red-x"
-    squares[99].className += " blue-x"
+    squares[0].className += " red-x";
+    squares[99].className += " blue-x";
 
     //Подсветка краев поля для обозначения очередности
-    let field = document.getElementsByClassName("field")[0]
+    let field = document.getElementsByClassName("field")[0];
     field.style.borderColor = (turn % 2) ? "blue" : "red";
-
 
     document.getElementById("make-move").onclick = function () {
         if (newX.length != 3) {
@@ -24,96 +23,25 @@ window.onload = function () {
         }
 
         turn++;
-        let turnColor = ((turn % 2) ? "red" : "blue");
+        let turnColor = (turn % 2) ? "red" : "blue";
         field.style.borderColor = turnColor;
         newX = [];
 
         //Проверка окончания игры 
         var endOfGame = true;
-        for(sqr of squares){
-            if (
-               (sqr.className == "square" || 
-                sqr.className == `square ${turnColor}-x`) &&
-                isAlive(sqr)
-            ){
+        for (sqr of squares) {
+            if ((sqr.className == `square ${turnColor}-x` 
+            ||  sqr.className == "square")
+            &&  isAlive(sqr)) {    
                 endOfGame = false;
                 break;
             }
         }
         if (endOfGame) {
-            window.alert("Игра окончена! Победил " + ((turn % 2) ? "красный" : "синий") + " игрок");
+            let winpl = (turn % 2) ? "красный" : "синий";
+            window.alert(`Игра окончена! Победил ${winpl} игрок`);
         }
     }
-}
-
-function findNeighbors() {
-    // или бахнуть метод каждому this
-    //1 2 3 - номера соседей
-    //4   6
-    //7 8 9
-    let neighbors = []
-    if (this.row != 0) {
-        //сосед 2
-        neighbors.push(squares[(this.row - 1) * 10 + this.column])
-        if (this.column != 0) {
-            //сосед 1
-            neighbors.push(squares[(this.row - 1) * 10 + this.column - 1])
-        }
-        if (this.column != 9) {
-            //сосед 3
-            neighbors.push(squares[(this.row - 1) * 10 + this.column + 1])
-        }
-    }
-    if (this.row != 9) {
-        //сосед 8
-        neighbors.push(squares[(this.row + 1) * 10 + this.column])
-        if (this.column != 0) {
-            //сосед 7
-            neighbors.push(squares[(this.row + 1) * 10 + this.column - 1])
-        }
-        if (this.column != 9) {
-            //сосед 9
-            neighbors.push(squares[(this.row + 1) * 10 + this.column + 1])
-        }
-    }
-    if (this.column != 0) {
-        //сосед 4
-        neighbors.push(squares[this.row * 10 + this.column - 1])
-    }
-    if (this.column != 9) {
-        //сосед 6
-        neighbors.push(squares[this.row * 10 + this.column + 1])
-    }
-    return neighbors;
-}
-
-//можем ди поставить крестик в данную клетку?
-function isAlive(square, new_ignore) {
-    let myColor = (turn % 2) ? "blue" : "red";
-    let enemyColor = (turn % 2) ? "red" : "blue";
-
-    let neighbors = square.findNeighbors();
-    let newNeighbors;
-
-    let deadsqr = `square ${enemyColor}-x ${myColor}-background`
-    let redX = `square ${myColor}-x`
-    for (nghb of neighbors) {
-        if (
-            nghb.className == deadsqr ||
-            nghb.className == redX &&
-            newX.includes(nghb) &&
-            new_ignore
-        ) {
-            newNeighbors = nghb.findNeighbors();
-            for (newNghb of newNeighbors) {
-                if (!neighbors.includes(newNghb))
-                    neighbors.push(newNghb);
-            }
-        }
-        else if (nghb.className == redX)
-            return true;
-    }
-    return false;
 }
 
 function putX() {
@@ -146,6 +74,75 @@ function putX() {
             newX.splice(newX.indexOf(this), 1);
         }
     }
+}
+
+//1 2 3 
+//4 * 6 - номера соседей
+//7 8 9
+function findNeighbors() {
+    let neighbors = [];
+    if (this.row != 0) {
+        //сосед 2
+        neighbors.push(squares[(this.row - 1) * 10 + this.column]);
+        //сосед 1
+        if (this.column != 0) {
+            neighbors.push(squares[(this.row - 1) * 10 + this.column - 1]);
+        }
+        //сосед 3
+        if (this.column != 9) {
+            neighbors.push(squares[(this.row - 1) * 10 + this.column + 1]);
+        }
+    }
+    if (this.row != 9) {
+        //сосед 8
+        neighbors.push(squares[(this.row + 1) * 10 + this.column]);
+        //сосед 7
+        if (this.column != 0) {
+            neighbors.push(squares[(this.row + 1) * 10 + this.column - 1]);
+        }
+        //сосед 9
+        if (this.column != 9) {
+            neighbors.push(squares[(this.row + 1) * 10 + this.column + 1]);
+        }
+    }
+    //сосед 4
+    if (this.column != 0) {
+        neighbors.push(squares[this.row * 10 + this.column - 1]);
+    }
+    //сосед 6
+    if (this.column != 9) {
+        neighbors.push(squares[this.row * 10 + this.column + 1]);
+    }
+    return neighbors;
+}
+
+//можем ди поставить крестик в данную клетку?
+function isAlive(square, new_ignore) {
+    let myColor = (turn % 2) ? "blue" : "red";
+    let enemyColor = (turn % 2) ? "red" : "blue";
+
+    let neighbors = square.findNeighbors();
+    let newNeighbors;
+
+    let deadsqr = `square ${enemyColor}-x ${myColor}-background`;
+    let redX = `square ${myColor}-x`;
+    for (nghb of neighbors) {
+        if (nghb.className == deadsqr 
+        ||  nghb.className == redX
+        &&  newX.includes(nghb)
+        &&  new_ignore) {
+            newNeighbors = nghb.findNeighbors();
+            for (newNghb of newNeighbors) {
+                if (!neighbors.includes(newNghb)) {
+                    neighbors.push(newNghb);
+                }
+            }
+        }
+        else if (nghb.className == redX) {
+            return true;
+        }
+    }
+    return false;
 }
 
 //Можем ли удалить крестик (Является ли он мостом?)
