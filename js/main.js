@@ -1,5 +1,8 @@
+let turn = 0;
+let newX = [];
+const squares = document.getElementsByClassName("square");
+
 window.onload = function () {
-    squares = document.getElementsByClassName("square");
     for (let i = 0; i < squares.length; i++) {
         squares[i].onclick = putX;
         squares[i].row = Math.floor(i / 10);
@@ -14,7 +17,7 @@ window.onload = function () {
 
     //Подсветка краев поля для обозначения очередности
     let field = document.getElementsByClassName("field")[0];
-    field.style.borderColor = (turn % 2) ? "blue" : "red";
+    field.style.borderColor = "red";
 
     document.getElementById("make-move").onclick = function () {
         if (newX.length != 3) {
@@ -23,12 +26,12 @@ window.onload = function () {
         }
 
         turn++;
-        let turnColor = (turn % 2) ? "red" : "blue";
+        let turnColor = (turn % 2) ? "blue" : "red";
         field.style.borderColor = turnColor;
         newX = [];
 
         //Проверка окончания игры 
-        var endOfGame = true;
+        let endOfGame = true;
         for (sqr of squares) {
             if ((sqr.className == `square ${turnColor}-x` 
             ||  sqr.className == "square")
@@ -56,7 +59,7 @@ function putX() {
             newX.push(this);
         }
     }
-    else if (this.className == `square ${myColor}-x`) {
+    else if (this.className == `square ${enColor}-x`) {
         if (isAlive(this) && newX.length < 3) {
             this.className += ` ${enColor}-background`;
             newX.push(this);
@@ -117,20 +120,20 @@ function findNeighbors() {
 }
 
 //можем ди поставить крестик в данную клетку?
-function isAlive(square, new_ignore) {
-    let myColor = (turn % 2) ? "blue" : "red";
-    let enemyColor = (turn % 2) ? "red" : "blue";
+function isAlive(square, ignoreNewX) {
+    const myColor = (turn % 2) ? "blue" : "red";
+    const enemyColor = (turn % 2) ? "red" : "blue";
 
     let neighbors = square.findNeighbors();
     let newNeighbors;
 
-    let deadsqr = `square ${enemyColor}-x ${myColor}-background`;
-    let redX = `square ${myColor}-x`;
+    const deadsqr = `square ${enemyColor}-x ${myColor}-background`;
+    const myX = `square ${myColor}-x`;
     for (nghb of neighbors) {
         if (nghb.className == deadsqr 
-        ||  nghb.className == redX
+        ||  nghb.className == myX
         &&  newX.includes(nghb)
-        &&  new_ignore) {
+        &&  ignoreNewX) {
             newNeighbors = nghb.findNeighbors();
             for (newNghb of newNeighbors) {
                 if (!neighbors.includes(newNghb)) {
@@ -138,7 +141,7 @@ function isAlive(square, new_ignore) {
                 }
             }
         }
-        else if (nghb.className == redX) {
+        else if (nghb.className == myX) {
             return true;
         }
     }
@@ -147,7 +150,7 @@ function isAlive(square, new_ignore) {
 
 //Можем ли удалить крестик (Является ли он мостом?)
 function isBridge() {
-    let cN = this.className;
+    const cN = this.className;
     this.className = "square";
 
     //Проверяем, все ли новые крестики остались живы
@@ -161,8 +164,3 @@ function isBridge() {
     this.className = cN;
     return false;
 }
-
-//не помнню, почему эти переменные определяются здесь
-//возможно, из-за области видимости, на var-у все равно
-var turn = 0;
-var newX = [];
