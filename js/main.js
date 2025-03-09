@@ -1,11 +1,11 @@
-import { createGameState } from "./gameLogic.js";
 import { paintField } from "./cosmetic.js";
+import { initSquares, nextTurn, createGameState } from "./gameLogic/index.js";
 
 window.onload = function () {
     const gameState = createGameState("red");
-    
+    initSquares(gameState);
     paintField(gameState.getFirstPl());
-    initTurnButton(gameState.nextTurn);
+    initTurnButton(() => nextTurn(gameState));
 }
 
 function initTurnButton(nextTurn) {
