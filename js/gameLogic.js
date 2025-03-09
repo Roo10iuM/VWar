@@ -12,7 +12,7 @@ export function createGameState(plColor) {
 
     return {
         getTurn: () => turn,
-        nextTurn: nextTurn,
+        nextTurn: () => nextTurn(),
         getFirstPl: () => firstPl,
     }
     
@@ -46,7 +46,7 @@ export function createGameState(plColor) {
         const enemyColor = (turn % 2) ? firstPl : secondPL;
 
         let neighbors = square.neighbors;
-        let newNeighbors;
+        let newNeighbors = [];
 
         const deadsqr = `square ${enemyColor}-x ${myColor}-background`;
         const myX = `square ${myColor}-x`;
@@ -74,8 +74,8 @@ export function createGameState(plColor) {
 
 
 
-    function initSquare(squares) {
-        squares = document.getElementsByClassName("square");
+    function initSquare() {
+        const squares = document.getElementsByClassName("square");
         for (let i = 0; i < squares.length; i++) {
             squares[i].row = Math.floor(i / 10);
             squares[i].column = i % 10;
