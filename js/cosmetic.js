@@ -1,5 +1,3 @@
-const field = document.getElementsByClassName("field")[0];
-
-export function paintField(fieldColor) {
+export function paintFieldBorder(fieldColor, field) {
     field.style.borderColor = fieldColor;
 }

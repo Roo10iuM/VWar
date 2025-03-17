@@ -8,7 +8,6 @@ export function createGameState(plColor) {
         getFirstPl: () => firstPl,
         getSecondPl: () => secondPl,
         getTurn: () => turn,
-        nextTurn: () => nextTurn(),
         incTurn: () => ++turn,
         getNewX: () => newX,
         getLenNewX: () => newX.length,

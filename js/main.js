@@ -1,14 +1,16 @@
-import { paintField } from "./cosmetic.js";
+import { paintFieldBorder } from "./cosmetic.js";
 import { initSquares, nextTurn, createGameState } from "./gameLogic/index.js";
 
 window.onload = function () {
     const gameState = createGameState("red");
     initSquares(gameState);
-    paintField(gameState.getFirstPl());
-    initTurnButton(() => nextTurn(gameState));
+
+    const field = document.getElementsByClassName("field")[0];
+    paintFieldBorder(gameState.getFirstPl(), field);
+    initTurnButton(nextTurn, gameState, field);
 }
 
-function initTurnButton(nextTurn) {
+function initTurnButton(nextTurn, gameState, field) {
     const turnButton = document.getElementById("make-move");
-    turnButton.onclick = nextTurn;
+    turnButton.onclick = () => nextTurn(gameState, field);
 }

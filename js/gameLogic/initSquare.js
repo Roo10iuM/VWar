@@ -5,7 +5,6 @@ export function initSquares(gameState) {
             squares[i].column = i % 10;
             squares[i].onclick = createPutX(gameState);
             squares[i].neighbors = findNeighbors(squares[i], squares);
-            squares[i].defBord = squares[i].style.borderWidth;
         } 
 
     squares[0].className += " red-x";
