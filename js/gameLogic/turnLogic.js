@@ -1,13 +1,13 @@
-import { paintField } from "../cosmetic.js";
+import { paintFieldBorder } from "../cosmetic.js";
 
-export function nextTurn(gameState) {
+export function nextTurn(gameState, field) {
     if (isValidTurn(gameState)) {
         gameState.incTurn();
         for (const x of gameState.getNewX()) {
             x.style.borderWidth = "1px";
         }
         gameState.resetNewX();
-        paintField(fieldColor(gameState));
+        paintFieldBorder(fieldColor(gameState), field);
     }
 }
 
@@ -16,8 +16,9 @@ function fieldColor(gameState) {
 }
 
 function isValidTurn(gameState) {
+    //On the first move each player puts 2 crosses
     let limitX = (gameState.getTurn() < 2) ? 2 : 3;
-    if (gameState.getLenNewX() != limitX && isPutPossible()) {
+    if (gameState.getLenNewX() != limitX && isPutPossible()) { 
         return false;
     }
     for (const x of gameState.getNewX()) {
@@ -42,8 +43,8 @@ function isAlive(gameState, square) {
     const myX = `square ${myColor}-x`;
     for (const nghb of neighbors) {
         if (nghb.className == deadsqr
-            || nghb.className == myX
-            && gameState.includesNewX(nghb)) {
+        || (nghb.className == myX
+        && gameState.includesNewX(nghb))) {
             newNeighbors = nghb.neighbors;
             for (const newNghb of newNeighbors) {
                 if (!neighbors.includes(newNghb)) {
