@@ -34,16 +34,15 @@ function isAlive(gameState, square) {
     const firstPl = gameState.getFirstPl();
     const secondPl = gameState.getSecondPl();
     const myColor = (turn % 2) ? secondPl : firstPl;
-    const enemyColor = (turn % 2) ? firstPl : secondPl;
 
-    let neighbors = square.neighbors;
+    let neighbors = [...square.neighbors];
     let newNeighbors = [];
 
-    const deadsqr = `square ${enemyColor}-x ${myColor}-background`;
-    const myX = `square ${myColor}-x`;
+    const deadsqr = `${myColor}-background`;
+    const myX = `${myColor}-x`;
     for (const nghb of neighbors) {
-        if (nghb.className == deadsqr
-        || (nghb.className == myX
+        if (nghb.classList.contains(deadsqr)
+        || (nghb.classList.contains(myX)
         && gameState.includesNewX(nghb))) {
             newNeighbors = nghb.neighbors;
             for (const newNghb of newNeighbors) {
@@ -52,7 +51,7 @@ function isAlive(gameState, square) {
                 }
             }
         }
-        else if (nghb.className == myX) {
+        else if (nghb.classList.contains(myX)) {
             return true;
         }
     }

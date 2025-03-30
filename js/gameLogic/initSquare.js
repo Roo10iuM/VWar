@@ -7,8 +7,8 @@ export function initSquares(gameState) {
             squares[i].neighbors = findNeighbors(squares[i], squares);
         } 
 
-    squares[0].className += " red-x";
-    squares[99].className += " blue-x";
+    squares[0].classList.add("red-x");
+    squares[99].classList.add("blue-x");
 
     return squares;
 }
@@ -72,29 +72,31 @@ function createPutX(gameState) {
         let enColor = (turn % 2) ? firstPl : secondPl;
         let limitX = (turn < 2) ? 2 : 3;
 
-        if (this.className == "square") {
+        if (this.classList.length == 1) {
             if (lenNewX < limitX) {
-                this.className += ` ${myColor}-x`;
+                this.classList.add(`${myColor}-x`);
                 this.style.borderWidth = boldBord;
                 gameState.pushNewX(this);
             }
         }
-        else if (this.className == `square ${enColor}-x`) {
+        else if (this.classList.contains(`${enColor}-x`)) {
             if (lenNewX < limitX) {
-                this.className += ` ${myColor}-background`;
+                this.classList.remove(`${enColor}-x`); 
+                this.classList.add(`${myColor}-background`);
                 this.style.borderWidth = boldBord;
                 gameState.pushNewX(this);
             }
         }
-        else if (this.className == `square ${myColor}-x`
+        else if (this.classList.contains(`${myColor}-x`)
             && gameState.includesNewX(this)) {
-            this.className = "square";
+            this.classList.remove(`${myColor}-x`);
             this.style.borderWidth = defBord;
             gameState.spliceNewX(this);
         }
-        else if (this.className == `square ${enColor}-x ${myColor}-background`
+        else if (this.classList.contains(`${myColor}-background`)
             && gameState.includesNewX(this)) {
-            this.className = `square ${enColor}-x`;
+            this.classList.remove(`${myColor}-background`);
+            this.classList.add(`${enColor}-x`);
             this.style.borderWidth = defBord;
             gameState.spliceNewX(this);
         }

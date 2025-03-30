@@ -41,11 +41,14 @@ body {
 }
 
 .red-background {
+    background-image: url(../images/blueCross.svg);
+    background-size: contain;
     background-color: red;
 }
 
-
 .blue-background {
+    background-image: url(../images/redCross.svg);
+    background-size: contain;
     background-color: blue;
 }
 
