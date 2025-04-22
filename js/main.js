@@ -6,6 +6,8 @@ window.onload = function () {
     initSquares(gameState);
 
     const field = document.getElementsByClassName("field")[0];
+    field.squares = document.getElementsByClassName("square");
+    
     paintFieldBorder(gameState.getFirstPl(), field);
     initTurnButton(nextTurn, gameState, field);
 }
