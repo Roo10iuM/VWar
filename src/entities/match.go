@@ -72,10 +72,11 @@ func (game_state GameState) toggleCell(target_postion TargetCellsPosition) error
 	cell := game_state.cells[target_postion.x][target_postion.y]
 	switch cell.state {
 	case Empty:
-		cell.state = game_state.getVirusCurrentPlayer()
+		cell.state = game_state.getCurrentPlayerVirus()
 	default:
-		cell.state = game_state.getVirusKilledEnemyPlayer()
+		// cell.state = game_state.getVirusKilledEnemyPlayer()
 	}
+	return nil
 }
 
 func (game_state GameState) isKilledCell(target_postion TargetCellsPosition) bool {
@@ -90,16 +91,16 @@ func (game_state GameState) isKilledCell(target_postion TargetCellsPosition) boo
 func (game_state GameState) isFriendlyCell(target_postion TargetCellsPosition) bool {
 	cell := game_state.cells[target_postion.x][target_postion.y]
 	switch cell.state {
-	case game_state.getVirusCurrentPlayer():
+	case game_state.getCurrentPlayerVirus():
 		return true
-	case game_state.getVirusKilledCurrentPlayer():
+	case game_state.getEnemyPlayerVirusKilled():
 		return true
 	default:
 		return false
 	}
 }
 
-func (game_state GameState) getVirusCurrentPlayer() CellState {
+func (game_state GameState) getCurrentPlayerVirus() CellState {
 	if len(game_state.turns)%2 == 0 {
 		return PlayerOneVirus
 	} else {
@@ -107,7 +108,7 @@ func (game_state GameState) getVirusCurrentPlayer() CellState {
 	}
 }
 
-func (game_state GameState) getVirusKilledCurrentPlayer() CellState {
+func (game_state GameState) getEnemyPlayerVirusKilled() CellState {
 	if len(game_state.turns)%2 == 0 {
 		return PlayerTwoVirusKilled
 	} else {
