@@ -37,19 +37,21 @@ func (game_state GameState) Move(turn Turn) error {
 		return errors.New("Invalid move")
 	}
 	game_state.setCells(turn)
+	// TODO
 }
 
 func (game_state GameState) isValideTurn(turn Turn) bool {
 	setCells(turn)
 	for _, target_postion := range turn.target_postions {
-
+		// TODO
 	}
 	return true
 }
 
 func (game_state GameState) setCells(turn Turn) error {
 	for _, target_postion := range turn.target_postions {
-		game_state.toggleCell(turn.target_postion)
+		err := game_state.toggleCell(target_postion)
+		// TODO
 	}
 	return nil
 }
@@ -74,7 +76,7 @@ func (game_state GameState) toggleCell(target_postion TargetCellsPosition) error
 	case Empty:
 		cell.state = game_state.getCurrentPlayerVirus()
 	default:
-		// cell.state = game_state.getVirusKilledEnemyPlayer()
+		// TODO
 	}
 	return nil
 }
